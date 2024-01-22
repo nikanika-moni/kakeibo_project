@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .sub-item {
+        margin-top: 10px;
+
+        label {
+            margin-right: 10px;
+        }
+
+        select {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    }
+}
+
+.horizontal-sub-items {
+    display: flex;
+    align-items: center;
+
+    .sub-item {
+        margin-right: 20px;
+
+        label {
+            margin-bottom: 5px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        select, input[type="number"] {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    }
+}
+
+

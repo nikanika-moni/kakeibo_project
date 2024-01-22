@@ -1,0 +1,149 @@
+@charset "UTF-8";
+body {
+  background: #eee;
+}
+
+.main-page {
+  max-width: 320px;
+  margin: 0 auto;
+  margin: 20px auto;
+}
+.main-page button {
+  display: block;
+  margin: 20px auto;
+  background-color: #a6c83a;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  width: 100px;
+  height: 40px;
+  font-weight: bold;
+}
+
+h1 {
+  text-align: center;
+  font-size: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  white-space: nowrap;
+  border-radius: 10px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 10px;
+  font-weight: bold;
+  letter-spacing: 0;
+  color: #a6c83a;
+  line-height: 1;
+  text-align: center;
+}
+
+tr:first-of-type th {
+  background-color: #a6c83a;
+  line-height: 34px;
+  color: #fff;
+}
+
+tr:nth-child(odd) {
+  background-color: #f2f2f2; /* より薄い灰色の背景色に変更 */
+}
+
+th {
+  font-size: 15px;
+  padding: 12px 10px;
+}
+
+td {
+  max-width: 100px; /* 最大幅を100pxに設定 */
+  color: #666;
+}
+
+span {
+  font-size: 10px;
+}
+
+.user-m {
+  display: block;
+  font-size: 10px;
+  margin-top: 10px;
+}
+
+#goalFoodExpense {
+  width: 70%; /* 幅を50pxに設定 */
+}
+
+/* モーダル */
+.modal {
+  /* 既存のスタイルを保持 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  text-align: center;
+  padding-top: 50px;
+  overflow: auto; /* スクロール可能にする */
+}
+.modal img {
+  max-width: 300px;
+}
+.modal button {
+  display: block;
+  margin: 0 auto;
+}
+
+/* チェックボックスを非表示にするスタイル */
+.dontShowModal {
+  display: none;
+}
+
+.modal-content {
+  background: rgb(190, 190, 190);
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* スライダー用のスタイル */
+.slider {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.slider .slide {
+  display: none;
+  transition: transform 0.5s;
+}
+
+/* 最初のスライドを表示 */
+.slide:first-child {
+  display: block;
+}
+
+/* ボタンスタイル */
+#nextButton {
+  display: block;
+  margin: 0 auto;
+}
+
+/* 最後のスライドの場合、「次へ」ボタンを非表示 */
+.slide:last-child #nextButton {
+  display: none;
+}
+/*# sourceMappingURL=style.css.map */

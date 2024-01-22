@@ -1,0 +1,37 @@
+@extends('layouts.admin')
+@section('content')
+<div>
+        <button class="add-label-btn" onclick="openModal()">ラベルを追加する</button>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+
+                <form id="" action="{{ route('assets.add_goal',['userId' => $userId]) }}" method="POST">
+                    @csrf
+                    <select id="spending_category" name="spending_category_id" required>
+                        <option value="select-def" disabled selected>選択してください</option>
+                        @foreach($spending_categories as $spending_category)
+                            <option value="{{ $spending_category->id }}">
+                                {{ $spending_category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <button type="submit">追加する</button>
+                </form>
+
+                <div id="dropdown-container"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const userId = {{ $userId }};
+    </script>
+    <footer>
+        <nav>
+            <a href="#">ホーム</a>
+            <a href="#">収支</a>
+            <a href="#">その他</a>
+            <a href="#">設定</a>
+        </nav>
+    </footer>
+@endsection

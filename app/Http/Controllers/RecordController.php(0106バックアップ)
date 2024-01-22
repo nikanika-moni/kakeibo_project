@@ -1,0 +1,268 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\UserDetails;
+use App\Http\Requests\AddLabelRecordRequest;
+use App\Http\Requests\RecordDetailRequest;
+use Illuminate\Support\Facades\DB;
+use App\Models\SpendingCategory;
+use App\Models\AddLabelRecord;
+use App\Models\RecordDetail;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+
+
+class RecordController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index($userId)
+    {
+        $record_details = RecordDetail::whereHas('spending_label_intermediate', function ($query) use ($userId) {
+            $query->where('user_details_id', $userId);
+        })
+        ->latest('updated_at')
+        ->paginate(5);
+
+        return view('records.index', compact('userId', 'record_details'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create($userId, $year, $month, $day)
+    {
+        $spending_categories = SpendingCategory::all();
+
+        // ユーザーに紐づくラベルの表示
+        $spending_label_intermediate = AddLabelRecord::where('user_details_id', $userId)->get();
+
+        $existingLabels = AddLabelRecord::where('user_details_id', $userId)
+        ->pluck('spending_category_id')
+        ->toArray();
+
+        // ドロップダウンリストから既存の組み合わせを除外
+        $spending_categories = $spending_categories->reject(function ($category) use ($existingLabels) {
+        return in_array($category->id, $existingLabels);
+        });
+
+        return view('records.create', compact('spending_categories', 'userId', 'year', 'month', 'day', 'spending_label_intermediate'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function add_label($userId, $year, $month, $day, AddLabelRecordRequest $request)
+    {
+        // 既存の組み合わせを検証
+        $existingLabel = AddLabelRecord::where('user_details_id', $userId)
+        ->where('spending_category_id', $request->input('spending_category_id'))
+        ->first();
+
+        // 既存の組み合わせが存在しない場合のみ新規登録
+        if (!$existingLabel) {
+        $add_label = new AddLabelRecord($request->validated());
+        $add_label->user_details_id = $userId;
+        $add_label->save();
+        // 支出カテゴリーを取得
+        $spending_category = SpendingCategory::find($request->input('spending_category_id'));
+        // ラベルと支出カテゴリーを関連付ける
+        $add_label->spending_category()->associate($spending_category);
+
+        return redirect()->route('record.create', ['userId' => $userId, 'year' => $year, 'month' => $month, 'day' => $day]);
+        } else {
+        // 既に存在する場合は何らかの処理（メッセージ表示等）を行うか、何もしない
+        return redirect()->back()->with('error', '既に同じラベルが存在します。');
+        }
+    }
+
+    // public function add_spending($userId, RecordDetailRequest $request)
+    // {
+    //     // リクエストの検証
+    //     $validatedData = $request->validated();
+
+    //     // フォームからのデータを取得
+    //     $amounts = $request->input('amounts');
+    //     $memos = $request->input('memos');
+    //     $spendingLabelIntermediateIds = $request->input('spending_label_intermediate_ids');
+
+    //     // 各データを保存
+    //     foreach ($amounts as $key => $amount) {
+    //         $spending_detail = new RecordDetail($validatedData);
+    //         $spending_detail->amount = $amount;
+    //         $spending_detail->memo = $memos[$key] ?? null;
+    //         $spending_detail->spending_label_intermediate_id = $spendingLabelIntermediateIds[$key];
+    //         $spending_detail->date = "{$request->year}-{$request->month}-{$request->day}";
+    //         Log::info($spending_detail);
+    //         $spending_detail->save();
+    //     }
+
+    //     // リダイレクト
+    //     return redirect()->route('record.index', ['userId' => $userId]);
+    // }
+
+
+
+
+
+
+
+
+
+    // public function add_spending($userId, RecordDetailRequest $request)
+    // {
+    //     // リクエストの検証
+    //     $validatedData = $request->validated();
+
+    //     // フォームからのデータを取得
+    //     $amounts = $request->input('amounts');
+    //     $memos = $request->input('memos');
+    //     $spendingLabelIntermediateIds = $request->input('spending_label_intermediate_ids');
+
+    //     foreach ($amounts as $key => $amount) {
+    //         // Log::info("テスト1");
+    //         // $spendingLabelIntermediateIds[$key] または $dates[$key] が存在しない場合はスキップ
+    //         if (!isset($spendingLabelIntermediateIds[$key])) {
+    //             // if (!isset($spendingLabelIntermediateIds[$key]) || !isset($dates[$key]))
+    //             continue;
+    //         }
+
+    //         // Log::info("テスト2");
+    //         $spending_detail = new RecordDetail($validatedData);
+    //         $spending_detail->amount = $amount;
+    //         $spending_detail->memo = $memos[$key] ?? null;
+    //         $spending_detail->spending_label_intermediate_id = $spendingLabelIntermediateIds[$key];
+    //         // $spending_detail->date = $dates[$key];
+    //         $spending_detail->date = "{$request->year}-{$request->month}-{$request->day}";
+    //         $date = $spending_detail->date;
+
+    //         // Log::info($date);
+    //         // Log::info('amounts:', $amounts);
+    //         // Log::info('memos:', $memos);
+    //         // Log::info('spendingLabelIntermediateIds:', $spendingLabelIntermediateIds);
+
+
+    //         $existingRecords = RecordDetail::whereIn('spending_label_intermediate_id', $spendingLabelIntermediateIds)
+    //             ->whereIn('date', [$date])
+    //             ->get();
+
+    //         // 既存のデータと突合して、一致するものがあればそれを表示するなどの処理
+    //         // ここでの例ではログに表示していますが、実際の処理は要件に合わせて変更してください
+    //         foreach ($existingRecords as $existingRecord) {
+    //             // Log::info("データが重複しております。");
+    //             Log::info("Duplicate record found: {$existingRecord->date}, {$existingRecord->spending_label_intermediate_id}");
+    //         }
+    //         Log::info($spending_detail);
+    //         $spending_detail->save();
+    //     }
+
+    //     // リダイレクト
+    //     return redirect()->route('record.index', ['userId' => $userId]);
+    // }
+
+    public function add_spending($userId, RecordDetailRequest $request, $id)
+    {
+        // リクエストの検証
+        $validatedData = $request->validated();
+        $spending_detail = new RecordDetail($validatedData);
+
+        $record_detail = RecordDetail::findOrFail($id);
+
+    // 既存のレコードがあった場合の処理-------------------
+            // 対象のテーブルとカラムでデータが存在するか検索
+            $duplicateData = RecordDetail::where('spending_label_intermediate_id', $spendingLabelIntermediateIds)
+                ->where('date', $date)
+                ->get();
+
+        // 使用例
+        $spending_label_intermediate_array = json_decode($spending_label_intermediate, true);
+
+        $spendingLabelIntermediateIds = [];
+
+        // 配列から id を取り出して $id_columns に追加
+        foreach ($spending_label_intermediate_array as $item) {
+            if (isset($item['id'])) {
+                $spendingLabelIntermediateIds[] = $item['id'];
+                $date = "{$year}-{$month}-{$day}";
+            }
+        }
+
+        if (hasDuplicateData($spendingLabelIntermediateId, $date)) {
+        return view('record.create', compact('record_detail'));
+        }
+    // 既存のレコードがあった場合の処理-------------------
+
+
+
+        // フォームからのデータを取得
+        $amounts = $request->input('amounts');
+        $memos = $request->input('memos');
+        $spendingLabelIntermediateIds = $request->input('spending_label_intermediate_ids');
+        $spending_detail->date = "{$request->year}-{$request->month}-{$request->day}";
+        $date = $spending_detail->date;
+
+        foreach ($amounts as $key => $amount) {
+            // $spendingLabelIntermediateIds[$key] または $dates[$key] が存在しない場合はスキップ
+            if (!isset($spendingLabelIntermediateIds[$key]) || !isset($date[$key])) {
+                continue;
+            }
+            $spending_detail = new RecordDetail($validatedData);
+            $spending_detail->amount = $amount;
+            $spending_detail->memo = $memos[$key] ?? null;
+            $spending_detail->date = $date;
+            $spending_detail->spending_label_intermediate_id = $spendingLabelIntermediateIds[$key];
+
+            $existingRecords = RecordDetail::whereIn('spending_label_intermediate_id', $spendingLabelIntermediateIds)
+                ->whereIn('date', [$date])
+                ->get();
+
+            // 既存のデータと突合して、一致するものがあればそれを表示するなどの処理
+            // ここでの例ではログに表示していますが、実際の処理は要件に合わせて変更してください
+            foreach ($existingRecords as $existingRecord) {
+                Log::info("Duplicate record found: {$existingRecord->date}, {$existingRecord->spending_label_intermediate_id}");
+                return redirect()->route('record.index', ['userId' => $userId]);
+            }
+            Log::info('セーブ前ログ',$spending_detail->toArray());
+            $spending_detail->save();
+        }
+        // リダイレクト
+        return redirect()->route('record.index', ['userId' => $userId]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit_spending(RecordDetailRequest $request, $id)
+    {
+        $record_detail = RecordDetail::findOrFail($id);
+        return view('record.create', compact('record_detail'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update_spending($userId, RecordDetailRequest $request, $id)
+    {
+        $record_detail = RecordDetail::findOrFail($id);
+        $updateData = $request->validated();
+
+        $record_detail->amount()->associate($updateData['amount']);
+        $record_detail->memo()->associate($updateData['memo']);
+        // Log::debug('オプションID: ' . json_encode($updateData['options_id']));
+        $record_detail->update($updateData);
+
+        return redirect()->route('admin.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}

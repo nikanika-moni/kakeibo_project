@@ -1,0 +1,65 @@
+$primary-color: #3498db; // プライマリカラーを定義
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+.expense-tracker-container {
+    background-color: #fff;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    h1 {
+        color: $primary-color;
+    }
+
+    .form-group {
+        text-align: left;
+        margin-bottom: 15px;
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+            box-sizing: border-box; /* ボーダーとパディングを含めたボックスサイズ */
+        }
+
+        select {
+            appearance: none;
+        }
+    }
+
+    button {
+        width: 100%;
+        background-color: $primary-color;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: $primary-color;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

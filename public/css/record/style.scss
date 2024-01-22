@@ -1,0 +1,200 @@
+$primary-color: #3498db;
+
+// ▼▼▼▼▼▼▼▼カレンダー▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+// .calendar-container {
+//     background-color: #fff;
+//     max-width: 320px; // モバイルファーストの最大幅
+//     margin: 0 auto;
+//     border-radius: 5px;
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+//     padding: 10px;
+// }
+
+.month-year {
+    color: $primary-color;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        background-color: $primary-color;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    th, td {
+        text-align: center;
+        padding: 5px;
+    }
+
+    td {
+        cursor: pointer;
+        transition: background-color 0.3s;
+        user-select: none;
+        width: 80px; /* セルの幅を調整 */
+        height: 50px; /* セルの高さを調整 */
+        font-size: 10px; /* テキストのフォントサイズを変更 */
+        padding: 10px; /* セル内の余白を調整 */
+
+        &:hover {
+            background-color: #f2f2f2;
+        }
+
+        &.selected {
+            background-color: $primary-color;
+            color: white;
+        }
+    }
+}
+
+.other-month {
+    color: #999; /* 他の月の日付の色を薄くする */
+}
+
+// ▲▲▲▲▲▲▲カレンダー▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+// ▼▼▼▼▼▼▼▼登録データ一覧▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+
+
+.recent-data-table {
+    width: 100%;
+    margin: 20px auto;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    table {
+        width: 100%;
+
+        thead {
+            tr {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
+                background-color: #f2f2f2;
+
+                th {
+                    flex: 1;
+                    text-align: center;
+
+                    &:first-child,
+                    &:last-child {
+                        flex: 2;
+                    }
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                background-color: #f2f2f2;
+
+                td {
+                    flex: 1;
+                    text-align: center;
+
+                    &:first-child,
+                    &:last-child {
+                        flex: 2;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ▲▲▲▲▲▲▲登録データ一覧▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+
+
+
+/* モーダルスタイル ------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* ウィンドウを表示するクラス */
+.show {
+    display: block;
+}
+
+
+// チャートコンテナのスタイル
+#myChart {
+    max-height: 400px;
+    width: 100%; // チャートを親要素いっぱいに広げる
+    max-width: 300px; // チャートの最大幅を設定
+    margin: 0 auto; // 中央に配置
+}
+
+// チャートのラベルスタイル
+.chartjs-pie-label {
+    font-size: 14px; // ラベルのフォントサイズを変更
+}
+
+// チャートの色設定
+$chart-colors: (#36A2EB, #FF6384, #FFCE56);
+
+// チャートデータのスタイル
+.chartjs-render-monitor {
+    border-radius: 50%; // 円形にする
+}
+
+// チャートのアニメーション設定
+.chartjs-render-monitor {
+    transition: background-color 0.3s; // ホバー時のアニメーションを設定
+}
+
+// チャート選択時のスタイル
+.chartjs-render-monitor {
+    cursor: pointer; // ホバー時にカーソルをポインターに変更
+}
+
+// チャート選択時の背景色と文字色
+.chartjs-render-monitor.selected {
+    background-color: #36A2EB;
+    color: white;
+}
+
+

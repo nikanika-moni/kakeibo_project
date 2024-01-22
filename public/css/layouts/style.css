@@ -1,0 +1,45 @@
+@charset "UTF-8";
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.container_main {
+  background-color: #fff;
+  max-width: 320px;
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+}
+
+/* フッター ------------------------------- */
+footer {
+  background-color: #333;
+  padding: 5px;
+  max-width: 320px;
+  margin: 0 auto;
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+footer nav {
+  display: flex;
+  justify-content: space-around;
+}
+footer nav a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem;
+  max-width: 100px; /* 例として設定、必要に応じて変更 */
+  text-overflow: ellipsis; /* 長いテキストを省略記号で表示 */
+  white-space: nowrap; /* テキストを折り返さないようにする */
+  overflow: hidden; /* 非表示領域を隠す */
+}
+footer nav a:hover {
+  background-color: #555;
+}
+/*# sourceMappingURL=style.css.map */

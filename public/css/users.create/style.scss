@@ -1,0 +1,61 @@
+$primary-color: #3498db;
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex; /* 親要素をフレックスコンテナに設定 */
+    align-items: center; /* 垂直方向に中央に配置 */
+    justify-content: center; /* 水平方向に中央に配置 */
+    height: 100vh; /* 画面の高さいっぱいに表示 */
+    margin: 0;
+    padding: 0;
+}
+
+.register-container {
+    background-color: #fff;
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: $primary-color;
+}
+
+form {
+    input {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 16px;
+        box-sizing: border-box; /* ボーダーとパディングを含めたボックスサイズ */
+    }
+
+    button {
+        width: 100%;
+        background-color: $primary-color;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+}
+
+p {
+    margin-top: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: $primary-color;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
